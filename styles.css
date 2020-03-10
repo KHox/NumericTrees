@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  background-color: black;
+}
+
+#screen {
+  margin: auto;
+  margin-top: 10px;
+  font-size: 5px;
+  border-collapse: collapse;
+  border: 1px solid white;
+}
+
+#screen tr {
+  height: 6px;
+  padding: 0;
+}
+
+#screen td {
+  min-width: 6px;
+  max-width: 6px;
+  padding: 0;
+  text-align: center;
+}
+
+#screen .seed {
+  background-color: white
+}
+
+#screen .tree {
+  background-color: lime
+}

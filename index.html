@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css" type="text/css">
+  <title>Trees</title>
+  <script src="scripts/world.js"></script>
+  <script src="scripts/tree.js"></script>
+</head>
+
+<body>
+  <table id="screen">
+  </table>
+  <script type="text/javascript">
+    let str = '';
+    for (let i = 0; i < 144; i++) {
+      str += '<tr>';
+      for (let j = 0; j < 256; j++) {
+        str += '<td></td>';
+      }
+      str += '</tr>';
+    }
+    document.querySelector('#screen').innerHTML = str;
+  </script>
+  <script src="scripts/main.js"></script>
+</body>
+
+</html>
