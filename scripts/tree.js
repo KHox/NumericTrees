@@ -18,7 +18,7 @@ class Tree {
       seed.step += world.getLevel(x, y);
       if (seed.step > 1) {
         this.treeBlocks.push({x, y});
-        world.setTree(x, y);
+        world.setTree(x, y, this.color);
         let gens = this.gen[seed.num];
         let coords = [
           {x: x - 1, y}, //left
@@ -26,6 +26,8 @@ class Tree {
           {x: x + 1, y}, //right
           {x, y: y + 1} //down
         ];
+        if (coords[0].x == -1) coords[0].x = 255;
+        if (coords[2].x == 256) coords[2].x = 0;
         for (let i = 0; i < 4; i++) {
           if ((gens[i] < 16) && world.isEmpty(coords[i].x, coords[i].y)) {
             world.setSeed(coords[i].x, coords[i].y, gens[i]);
@@ -60,7 +62,6 @@ class Tree {
       this.spendEnergy();
       this.grow();
       this.age++;
-      console.log(this.energy);
     }
   }
 
@@ -81,7 +82,7 @@ class Tree {
       if (y == 143) { //Fell
         this.seeds.del(seed);
         i--;
-        this.newTree(x, y);
+        if (world.isGrowable(x, y) && ~world.getLevel(x, y)) this.newTree(x, y);
       } else if (world.isEmpty(x, y + 1)) { //Falling
         world.setSeed(x, y + 1, seed.num);
         seed.y++;
@@ -94,12 +95,15 @@ class Tree {
 
   newTree(x, y) {
     let gen;
+    let color;
     if (random(100) < 25) {
       gen = world.getMutate(this.gen);
+      color = `rgb(${random(255)}, ${random(255)}, ${random(255)})`;
     } else {
       gen = this.gen;
+      color = this.color;
     }
-    let tree = new Tree({x, y, gen});
+    let tree = new Tree({x, y, gen, color});
     world.add(tree);
   }
 }
@@ -119,5 +123,5 @@ Array.prototype.del = function(elem) {
 }
 
 function random(n) {
-  Math.round(Math.random() * (n + 1) - 0.5);
+  return Math.round(Math.random() * (n + 1) - 0.5);
 }

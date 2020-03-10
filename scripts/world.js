@@ -11,11 +11,12 @@ class World {
     this.getCell(x, y).innerHTML = num;
   }
 
-  setTree(x, y) {
+  setTree(x, y, color) {
     let cell = world.getCell(x, y);
     cell.classList.remove('seed');
     cell.classList.add('tree');
     cell.innerHTML = '';
+    cell.style.backgroundColor = color;
   }
 
   getCell(x, y) {
@@ -27,6 +28,7 @@ class World {
     cell.classList.remove('tree');
     cell.classList.remove('seed');
     cell.innerHTML = '';
+    cell.style.backgroundColor = '';
   }
 
   getLevel(x, y) {
@@ -47,6 +49,13 @@ class World {
     return !(cl.contains('tree') || cl.contains('seed'));
   }
 
+  isGrowable(x, y) {
+    for (let i = x - 3; i < x + 4; i++) {
+      if (!world.isEmpty(i, y)) return false;
+    }
+    return true;
+  }
+
   step() {
     this.trees = this.trees.concat(this.newTrees);
     this.newTrees = [];
@@ -60,5 +69,24 @@ class World {
 
   add(tree) {
     this.newTrees.push(tree);
+  }
+
+  getMutate(gen) {
+    let newGen = [];
+    for (var i = 0; i < gen.length; i++) {
+      newGen.push([]);
+      for (var j = 0; j < 4; j++) {
+        newGen[i].push(gen[i][j]);
+      }
+    }
+    newGen[random(gen.length - 1)][random(3)] = random(gen.length);
+    return newGen;
+  }
+
+  start(ms) {
+    if (this.timerId) clearInterval(this.timerId);
+    this.timerId = setInterval(() => {
+      world.step();
+    }, ms);
   }
 }
