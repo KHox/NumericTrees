@@ -33,14 +33,14 @@ class World {
 
   getLevel(x, y) {
     let count = 0;
-    for (let i = 0; i < y; i++) {
+    for (let i = y - 1; i > -1; i--) {
       let cl = this.getCell(x, i).classList;
       if (cl.contains('tree') || cl.contains('seed')) count++;
+      if (count == 3) return -1;
     }
     if (count == 2) return 0;
     if (count == 1) return 1;
     if (count == 0) return 2;
-    return -1;
   }
 
   isEmpty(x, y) {
@@ -57,13 +57,10 @@ class World {
   }
 
   step() {
-    this.trees = this.trees.concat(this.newTrees);
+    this.trees = this.newTrees;
     this.newTrees = [];
     for (let i = 0; i < this.trees.length; i++) {
-      if (this.trees[i].step()) {
-        this.trees.del(this.trees[i]);
-        i--;
-      }
+      if (!this.trees[i].step()) this.newTrees.push(this.trees[i]);
     }
   }
 
@@ -83,10 +80,10 @@ class World {
     return newGen;
   }
 
-  start(ms) {
+  start(ms, n = 1) {
     if (this.timerId) clearInterval(this.timerId);
     this.timerId = setInterval(() => {
-      world.step();
+      for (let i = 0; i < n; i++) world.step();
     }, ms);
   }
 }

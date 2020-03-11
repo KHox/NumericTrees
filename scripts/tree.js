@@ -34,11 +34,11 @@ class Tree {
             this.newSeeds.push({x: coords[i].x, y: coords[i].y, num: gens[i], step: 0});
           }
         }
-        this.seeds.del(seed);
-        j--;
+      } else {
+        this.newSeeds.push(seed);
       }
     }
-    this.seeds = this.seeds.concat(this.newSeeds);
+    this.seeds = this.newSeeds;
     this.newSeeds = [];
   }
 
@@ -123,5 +123,5 @@ Array.prototype.del = function(elem) {
 }
 
 function random(n) {
-  return Math.round(Math.random() * (n + 1) - 0.5);
+  return Math.floor(Math.random() * (n + 1));
 }
