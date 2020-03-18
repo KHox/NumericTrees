@@ -2,13 +2,16 @@ class Tree {
   constructor({gen, x, y, color}) {
     this.gen = gen;
     this.color = color;
-    world.setSeed(x, y, 0);
-    this.seeds = [{x, y, num: 0, step: 0}];
     this.treeBlocks = [];
     this.newSeeds = [];
     this.energy = 300;
     this.age = 0;
-    this.died = false;
+    this.died = true;
+    if (!isNaN(y) && !isNaN(x)) {
+      if (y == 143) this.died = false;
+      this.seeds = [{x, y, num: 0, step: 0}];
+      world.setSeed(x, y, 0);
+    }
   }
 
   grow() {
@@ -55,7 +58,7 @@ class Tree {
 
   step() {
     if (this.died) return this.trackSeeds();
-    if ((this.energy < 1) || (this.age > (random(16) + 81)) || this.seeds.length == 0) {
+    if ((this.energy < 1) || this.seeds.length == 0 || (this.age > (random(16) + 81))) {
       this.die();
     } else {
       this.getEnergy();
@@ -106,7 +109,40 @@ class Tree {
     let tree = new Tree({x, y, gen, color});
     world.add(tree);
   }
+
+  delete() {
+    this.die();
+    this.seeds.forEach(seed => {
+      world.removeBlock(seed.x, seed.y);
+    });
+    this.seeds = [];
+  }
 }
+
+class Spruce extends Tree{
+  constructor({x, y}) {
+    let gen = Spruce.gen;
+    super({gen, x, y, color: 'rgb(7, 84, 48)'});
+  }
+}
+Spruce.gen = [
+  [1, 16, 16, 16],
+  [16, 2, 16, 16],
+  [3, 16, 16, 16],
+  [16, 4, 16, 16],
+  [16, 5, 16, 16],
+  [8, 6, 7, 16],
+  [12, 16, 16, 16],
+  [16, 16, 9, 16],
+  [10, 16, 16, 16],
+  [16, 16, 7, 16],
+  [8, 16, 16, 16],
+  [16, 16, 16, 16],
+  [16, 5, 16, 16],
+  [16, 16, 16, 16],
+  [16, 16, 16, 16],
+  [16, 16, 16, 16]
+];
 
 Array.prototype.del = function(elem) {
   let f = false;

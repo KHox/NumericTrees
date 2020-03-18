@@ -8,6 +8,7 @@ let gen = [
 for (let i = 4; i < 16; i++) {
   gen.push([16, 16, 16, 16]);
 }
-let tree = new Tree({gen, x: 70, y: 143, color: 'lime'});
-world.add(tree);
-world.start(0);
+//let tree = new Tree({gen, x: 70, y: 143, color: 'lime'});
+let spruce = new Spruce({x: 127, y: 143});
+world.add(spruce);
+world.start(40);

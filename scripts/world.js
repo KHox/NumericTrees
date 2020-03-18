@@ -62,10 +62,12 @@ class World {
     for (let i = 0; i < this.trees.length; i++) {
       if (!this.trees[i].step()) this.newTrees.push(this.trees[i]);
     }
+    return this;
   }
 
   add(tree) {
     this.newTrees.push(tree);
+    return this;
   }
 
   getMutate(gen) {
@@ -81,9 +83,23 @@ class World {
   }
 
   start(ms, n = 1) {
-    if (this.timerId) clearInterval(this.timerId);
+    this.stop();
     this.timerId = setInterval(() => {
       for (let i = 0; i < n; i++) world.step();
     }, ms);
+    return this;
+  }
+
+  stop() {
+    if (this.timerId) clearInterval(this.timerId);
+    return this;
+  }
+
+  clearAll() {
+    this.trees.concat(this.newTrees).forEach(tree => {
+      tree.delete()
+    });
+    this.trees = this.newTrees = [];
+    return this;
   }
 }
