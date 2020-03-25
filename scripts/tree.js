@@ -4,7 +4,7 @@ class Tree {
     this.color = color;
     this.treeBlocks = [];
     this.newSeeds = [];
-    this.energy = 300;
+    this.energy = world.startEnergy;
     this.age = 0;
     this.died = true;
     if (!isNaN(y) && !isNaN(x)) {
@@ -58,7 +58,7 @@ class Tree {
 
   step() {
     if (this.died) return this.trackSeeds();
-    if ((this.energy < 1) || this.seeds.length == 0 || (this.age > (random(16) + 81))) {
+    if ((this.energy < 1) || this.seeds.length == 0 || (this.age > (random(16) + world.treeAge))) {
       this.die();
     } else {
       this.getEnergy();
@@ -119,7 +119,7 @@ class Tree {
   }
 }
 
-class Spruce extends Tree{
+class Spruce extends Tree {
   constructor({x, y}) {
     let gen = Spruce.gen;
     super({gen, x, y, color: 'rgb(7, 84, 48)'});
@@ -143,6 +143,17 @@ Spruce.gen = [
   [16, 16, 16, 16],
   [16, 16, 16, 16]
 ];
+
+class RandomTree extends Tree {
+  constructor({x, y, color}) {
+    let gen = [];
+    for (let i = 0; i < 16; i++) {
+      gen.push([random(30), random(30), random(30), random(30)]);
+    }
+    if (!color) color = `rgb(${random(255)}, ${random(255)}, ${random(255)})`;
+    super({gen, x, y, color});
+  }
+}
 
 Array.prototype.del = function(elem) {
   let f = false;

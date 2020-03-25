@@ -4,6 +4,8 @@ class World {
     this.season = 0;
     this.trees = [];
     this.newTrees = [];
+    this.startEnergy = 300;
+    this.treeAge = 81;
   }
 
   setSeed(x, y, num) {
@@ -82,7 +84,7 @@ class World {
     return newGen;
   }
 
-  start(ms, n = 1) {
+  start(ms = 0, n = 1) {
     this.stop();
     this.timerId = setInterval(() => {
       for (let i = 0; i < n; i++) world.step();
